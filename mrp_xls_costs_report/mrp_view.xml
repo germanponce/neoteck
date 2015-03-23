@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+<data>
+
+    <!-- HERENCIA LISTA DE MATERIALES -->
+    <record id="mrp_bom_inht_indirect_costs" model="ir.ui.view">
+        <field name="name">mrp.bom.form.ncm</field>
+        <field name="model">mrp.bom</field>
+        <field name="type">form</field>
+        <field name="inherit_id" ref="mrp.mrp_bom_form_view"/>
+        <field name="arch" type="xml">
+            <notebook position="inside">
+                <page string="Gastos Indirectos">
+                    <field name="indirect_costs_ids">
+                        <tree string="Gastos Indirectos" editable="bottom">
+                            <field name="product_id" domain="[('type','=','service')]"  context="{'default_type': 'service',}" on_change="on_change_product_id(product_id)"/>
+                            <field name="service_cost" sum="total"/>
+                        </tree>
+                    </field>
+                </page>
+            </notebook>
+        </field>
+    </record>
+
+</data>
+</openerp>
