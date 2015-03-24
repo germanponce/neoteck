@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+<data>
+
+<!--======================FORM VIEW =======================-->
+        <record id="agged_xls_export_form_id" model="ir.ui.view">
+            <field name="name">agged.xls.export.form</field>
+            <field name="model">agged.xls.export</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Generacion de Reporte XLS" version="7.0">
+                    <header>
+                        <field name="datas_fname" invisible="1" />
+                        <field name="download_file" invisible="1" />
+                    </header>
+                    
+                    <sheet attrs="{'invisible':[('download_file','=',True)]}">
+                        <separator colspan="4" string="Presiona Exportar para Generar el Reporte en XLS"/>
+                        
+                    </sheet>
+                    <sheet attrs="{'invisible':[('download_file','=',False)]}">
+                        <div >
+                            <h2>Generacion Completa</h2>
+                            <p>Descarga el Documento: <field name="file" readonly="1" filename="datas_fname"/></p>
+                            <p> Documento Generado con extension .xlsx y Codificado<strong>Unicode/UTF-8</strong></p> 
+                        </div>
+                    </sheet>
+                    <footer attrs="{'invisible':[('download_file','=',False)]}">
+                        <center>
+                            
+                            <button string="Cerrar" special="cancel"  icon="gtk-cancel" class="oe_highlight"/>
+                        </center>
+                    </footer>
+                    <footer attrs="{'invisible':[('download_file','=',True)]}">
+                        <center>
+                            <button name="export_xls_file" string="Exportar" type="object"  icon="gtk-execute"/>
+                            o
+                            <button string="Cancelar" class="oe_link" special="cancel" icon="gtk-cancel"/>
+                        </center>
+                    </footer>
+                    
+                </form>
+
+                </field>
+            </record>
+
+        <!--============================================ACTION========================================-->
+
+        <act_window
+            name="Exportar a XLS"
+            res_model="agged.xls.export"
+            src_model="historical.consumed.mrp"
+            view_mode="form" target="new"
+            key2="client_action_multi"
+            id="agged_xls_export_action"/>
+
+        <!--========== ASISTENTE DEL Reporte ===========-->
+        <record id="wizard_consumed_cost_mrp_form_view" model="ir.ui.view">
+            <field name="name">wizard_consumed_cost_mrp</field>
+            <field name="model">wizard.consumed.cost.mrp</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Generacion de Reporte de Consumos" version="7.0">
+                    <sheet>
+                            <separator string="Selecciona la Lista de Materiale" />
+
+                        <group>
+                            <field name="bom_id" nolabel="1"/>
+                        </group>
+                            <separator string="Periodo" />
+
+                        <group col="4" >
+                            <field name="date_start" />
+                            <field name="date_end" />
+                        </group>
+                    </sheet>
+                    
+                    <footer>
+                        <center>
+                            <button name="get_info" string="Generar" type="object" class="oe_highlight" icon="gtk-execute"/>
+
+                            <button string="Cancelar" class="oe_highlight" special="cancel" icon="gtk-cancel" />
+                        </center>
+                    </footer>
+                </form>
+                </field>
+            </record>
+
+
+        <!--============================================ACCION========================================-->
+        <act_window
+            name="Asistente Reporte de Consumos"
+            res_model="wizard.consumed.cost.mrp"
+            src_model="wizard.consumed.cost.mrp"
+            view_mode="form" target="new"
+            key2="client_action_multi"
+            id="action_consumed_period"/>
+
+    <record id="view_historical_consumed_mrp_filter" model="ir.ui.view">
+      <field name="name">historical_consumed_mrp_filter</field>
+      <field name="model">historical.consumed.mrp</field>
+      <field name="type">search</field>
+      <field name="arch" type="xml">
+        <search string="Filtros Reporte">
+          <!-- <filter icon="terp-dialog-close" string="Con Pedido de Ventas" domain="[('sale_order_id','!=',False)]"/> -->
+          <field name="name" />
+          <field name="sequence" />
+        </search>
+      </field>
+    </record>
+
+    <record id="view_historical_consumed_mrp_tree" model="ir.ui.view">
+      <field name="name">historical_consumed_mrp_tree</field>
+      <field name="model">historical.consumed.mrp</field>
+      <field name="type">tree</field>
+      <field name="arch" type="xml">
+        <tree string="Reporte de Consumos" >
+            <field name="sequence" />
+            <field name="name" />
+        </tree>
+      </field>
+    </record>
+    
+    <record id="view_historical_consumed_mrp_form" model="ir.ui.view">
+      <field name="name">historical_consumed_mrp</field>
+      <field name="model">historical.consumed.mrp</field>
+      <field name="type">form</field>
+      <field name="arch" type="xml">
+        <form string="Reporte de Consumos" version="7.0">  
+          <header>
+            <!-- <button name="get_info" string="Exportar a Excel" type="object" class="oe_highlight" icon="gtk-execute"/> -->
+            <button name="%(agged_xls_export_action)d" string="Exportar a Excel" 
+                type="action" icon="gtk-go-forward" 
+                />
+          </header>
+          <sheet>
+            <h1>
+              <!-- <label string="Reporte" /> -->
+              <field name="sequence" />
+            </h1>
+            
+            <separator string="Producto"/>
+            <group col="4" >
+                <field name="bom_id" />
+                <field name="product_id" />
+                <field name="uom_id" />
+            </group>
+            <separator string="Totales"/>
+            <group col="4">
+                <field name="product_qty" />
+                <field name="product_amount_total" />
+            </group>
+            <separator string="Periodo Consulta" />
+            <group col="4">
+                <field name="date_start" />
+                <field name="date_end" />
+            </group>
+            <group>
+                <field name="name" />
+            </group>
+            <notebook>
+                <page string="Consumo de Productos">
+                    <field name="consumed_lines" >
+                        <tree string="Productos Consumidos" editable="bottom">
+                            <field name="name" />
+                            <field name="product_id" />
+                            <field name="uom_id" />
+                            <field name="product_qty" />
+                            <field name="product_cost" />
+                            <field name="product_total" />
+                        </tree>
+                    </field>
+                <group class="oe_subtotal_footer oe_right" colspan="2" name="product_amount_lines">
+                    <field name="product_amount_lines"/>
+                </group>
+                <newline />
+                <newline />
+                <separator string="" />
+                </page>
+                <page string="Costos Indirectos">
+                    <field name="cost_lines" >
+                        <tree string="Productos Consumidos" editable="bottom">
+                            <field name="name" />
+                            <field name="product_id" />
+                            <field name="product_total" />
+                        </tree>
+                    </field>
+                    
+                <group class="oe_subtotal_footer oe_right" colspan="2" name="product_cost_lines">
+                    <field name="product_cost_lines"/>
+                </group>
+                <newline />
+                <newline />
+                <separator string="" />
+                </page>
+                <page string="Notas" >
+                    <group>
+                        <field name="notes" placeholder="Notas -----" nolabel="1"/>
+                    </group>
+                </page>
+            </notebook>
+                
+          </sheet>
+        </form>
+      </field>
+    </record>
+                
+          
+    <record id="action_historical_consumed_mrp" model="ir.actions.act_window">
+      <field name="name">Reporte de Consumos</field>
+      <field name="type">ir.actions.act_window</field>
+      <field name="res_model">historical.consumed.mrp</field>
+      <field name="view_type">form</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+    
+
+<!-- ======= SEQUENCE ========= -->
+        <record id="sequence_report_filter_oil" model="ir.sequence.type">
+            <field name="name">Secuencia Reporte Consumos</field>
+            <field name="code">historical.consumed.mrp</field>
+        </record>
+
+        <record id="sequence_report_filter_oil_def" model="ir.sequence">
+            <field name="name">Secuencia Reporte Consumos</field>
+            <field name="code">historical.consumed.mrp</field>
+            <field name="prefix">Reporte Consumos-</field>
+            <field name="padding">5</field>
+            <field name="implementation">no_gap</field>
+        </record>
+            <!--============================================MENU========================================-->
+        <menuitem name="Reportes"
+            id="menu_mrp_consumed_neoteck"
+            parent="base.menu_mrp_root"
+            sequence="3"/>
+
+            <menuitem action="action_consumed_period" id="menu_consumed_product" parent="menu_mrp_consumed_neoteck" sequence="1"/>
+            <menuitem action="action_historical_consumed_mrp" id="menu_historial_consumed_neoteck" parent="menu_mrp_consumed_neoteck" sequence="2"/>
+
+
+</data>
+</openerp>

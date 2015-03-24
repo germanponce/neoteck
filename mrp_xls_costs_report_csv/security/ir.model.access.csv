@@ -1,0 +1,7 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+wizard_consumed_cost_mrp_full_manager,wizard_consumed_cost_mrp,model_wizard_consumed_cost_mrp,base.group_user,1,1,1,1
+historical_consumed_mrp_full_manager,historical_consumed_mrp,model_historical_consumed_mrp,base.group_user,1,1,1,1
+historical_consumed_product_full_manager,historical_consumed_product,model_historical_consumed_product,base.group_user,1,1,1,1
+historical_consumed_cost_full_manager,historical_consumed_cost,model_historical_consumed_cost,base.group_user,1,1,1,1
+mrp_bom_indirect_costs_full_manager,mrp_bom_indirect_costs,model_mrp_bom_indirect_costs,base.group_user,1,1,1,1
+agged_xls_export_full_manager,agged_xls_export,model_agged_xls_export,base.group_user,1,1,1,1
