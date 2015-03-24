@@ -306,7 +306,7 @@ class agged_xls_export(osv.osv_memory):
                 cost_lines_str = ""
                 for cost in model_br.cost_lines:
                     cost_line_string = cost.name+','+cost.product_id.name+','+str(cost.product_total)+salto_linea
-                    cost_lines_str = cost_line_string+cost_line_string
+                    cost_lines_str = cost_lines_str+cost_line_string
                 document_csv = document_csv+cost_lines_str
                 document_csv = document_csv +','+'Total'+','+str(model_br.product_cost_lines)+salto_linea
 
