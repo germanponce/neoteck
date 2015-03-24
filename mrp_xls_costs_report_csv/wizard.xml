@@ -62,7 +62,7 @@
             <field name="arch" type="xml">
                 <form string="Generacion de Reporte de Consumos" version="7.0">
                     <sheet>
-                            <separator string="Selecciona la Lista de Materiale" />
+                            <separator string="Selecciona la Lista de Materiales" />
 
                         <group>
                             <field name="bom_id" nolabel="1"/>
