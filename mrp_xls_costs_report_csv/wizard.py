@@ -282,7 +282,7 @@ class agged_xls_export(osv.osv_memory):
             document_csv =  document_csv+ cabecera
             detalle_cabecera = str(model_br.bom_id.name)+','+str(model_br.product_id.name)+','+str(model_br.uom_id.name)+','+str(model_br.product_qty)+','+str(model_br.product_amount_total)+','+str(model_br.date_start)+','+str(model_br.date_end)
 
-            document_csv = document_csv+detalle_cabecera+salto_linea
+            document_csv = document_csv+detalle_cabecera+salto_linea+salto_linea
             document_csv = document_csv +'Productos Consumidos'+salto_linea
 
             cabecera_consumidos = 'Referencia'+','+'Producto'+','+'Unidad de Medida'+','+'Cantidad'+','+'Costo'+','+'Total'+salto_linea
@@ -296,25 +296,20 @@ class agged_xls_export(osv.osv_memory):
                 total_consumidos = ','+','+','+','+'Total'+','+str(model_br.product_amount_lines if model_br.product_amount_lines else 0.0)
 
                 document_csv = document_csv + total_consumidos +salto_linea
-            detalle_indirectos_cabecera = 'Gastos Indirectos'+salto_linea
-            detalle_indirectos_cabeceras = 'Referencia'+','+'Producto'+','+'Costo Total'+salto_linea
-            document_csv = document_csv+detalle_indirectos_cabecera+salto_linea
-            document_csv=document_csv+detalle_indirectos_cabeceras+salto_linea
+           
             
             if model_br.cost_lines:
+                detalle_indirectos_cabecera = 'Gastos Indirectos'+salto_linea
+                detalle_indirectos_cabeceras = 'Referencia'+','+'Producto'+','+'Costo Total'+salto_linea
+                document_csv = document_csv+detalle_indirectos_cabecera
+                document_csv=document_csv+detalle_indirectos_cabeceras
                 cost_lines_str = ""
                 for cost in model_br.cost_lines:
                     cost_line_string = cost.name+','+cost.product_id.name+','+str(cost.product_total)+salto_linea
                     cost_lines_str = cost_line_string+cost_line_string
                 document_csv = document_csv+cost_lines_str
                 document_csv = document_csv +','+'Total'+','+str(model_br.product_cost_lines)+salto_linea
-            # workbook.close()
 
-            # ########### HASTA AQUI SE CERRO Y SE CREO TEMPORALMENTE ########
-            # #### LO LEEMOS PARA ENCODEARLO A LA BASE ####
-            # f = open(fname.name, "r")
-            # data = f.read()
-            # f.close()
             datas_fname = model_br.sequence+".csv"
             rec.write({'cadena_decoding':document_csv,'datas_fname':datas_fname,'file':base64.encodestring(document_csv),'download_file': True})
         return {
